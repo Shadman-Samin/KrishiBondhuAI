@@ -134,9 +134,10 @@ function Hero() {
             <SectionLabel>Your AI Farming Companion</SectionLabel>
             <h1 className="mt-6 text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
               Bangladesh's{" "}
-              <span className="text-gradient">AI-Powered</span>{" "}
+              <span className="text-gradient animate-gradient inline-block">AI-Powered</span>{" "}
               Farming Assistant
             </h1>
+
             <p className="mt-6 max-w-xl text-lg text-muted-foreground leading-relaxed">
               An intelligent agriculture platform that helps farmers make better decisions using voice conversations, crop disease detection, satellite imagery, soil intelligence, weather forecasting, and localized agricultural knowledge.
             </p>
