@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "KrishiBondhu AI — Bangladesh's AI-Powered Farming Assistant" },
       { name: "description", content: "AI farming companion for Bangladesh: voice assistant, crop disease detection, satellite intelligence, soil & weather insights in Bangla." },
-      { name: "author", content: "Untitled Farming AI" },
+      { name: "author", content: "KrishiBondhu AI" },
       { property: "og:title", content: "KrishiBondhu AI — Bangladesh's AI-Powered Farming Assistant" },
       { property: "og:description", content: "AI farming companion for Bangladesh: voice assistant, crop disease detection, satellite intelligence, soil & weather insights in Bangla." },
       { property: "og:type", content: "website" },

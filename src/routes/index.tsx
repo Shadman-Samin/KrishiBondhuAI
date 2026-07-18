@@ -185,8 +185,8 @@ function Nav() {
               <Leaf className="h-5 w-5 text-primary-foreground" />
             </div>
             <div className="leading-tight">
-              <div className="font-display text-sm font-semibold">{t("Untitled", "আনটাইটেল্ড")}</div>
-              <div className="text-[10px] text-muted-foreground -mt-0.5">{t("Farming AI", "কৃষি এআই")}</div>
+              <div className="font-display text-sm font-semibold">{t("KrishiBondhu", "কৃষিবন্ধু")}</div>
+              <div className="text-[10px] text-muted-foreground -mt-0.5">{t("AI", "এআই")}</div>
             </div>
           </a>
           <nav className="hidden md:flex items-center gap-7 text-sm text-muted-foreground">
@@ -426,7 +426,7 @@ function Problem() {
         <div className="max-w-2xl">
           <SectionLabel>{t("The Problem", "সমস্যা")}</SectionLabel>
           <h2 className="mt-4 text-4xl md:text-5xl font-bold">{t("Agriculture faces many challenges", "কৃষি অনেক চ্যালেঞ্জের মুখোমুখি")}</h2>
-          <p className="mt-4 text-lg text-muted-foreground">{t("Every season, farmers across Bangladesh lose yield to preventable problems. We built Untitled to close that gap.", "প্রতি মৌসুমে বাংলাদেশের কৃষকরা প্রতিরোধযোগ্য সমস্যায় ফলন হারান। এই ঘাটতি পূরণ করতেই আমরা আনটাইটেল্ড তৈরি করেছি।")}</p>
+          <p className="mt-4 text-lg text-muted-foreground">{t("Every season, farmers across Bangladesh lose yield to preventable problems. We built KrishiBondhu to close that gap.", "প্রতি মৌসুমে বাংলাদেশের কৃষকরা প্রতিরোধযোগ্য সমস্যায় ফলন হারান। এই ঘাটতি পূরণ করতেই আমরা কৃষিবন্ধু তৈরি করেছি।")}</p>
         </div>
         <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {problems.map((p, i) => (
@@ -465,8 +465,8 @@ function Solution() {
         </h2>
         <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
           {t(
-            "Untitled combines large language models, computer vision, satellite intelligence, and localized agricultural knowledge into one voice-first assistant — specialized for Bangladesh's farms, seasons, and soil.",
-            "আনটাইটেল্ড বৃহৎ ভাষা মডেল, কম্পিউটার ভিশন, স্যাটেলাইট বুদ্ধিমত্তা এবং স্থানীয় কৃষি জ্ঞানকে একটি ভয়েস-ফার্স্ট সহকারীতে একত্র করে — বাংলাদেশের জমি, মৌসুম ও মাটির জন্য বিশেষায়িত।"
+            "KrishiBondhu combines large language models, computer vision, satellite intelligence, and localized agricultural knowledge into one voice-first assistant — specialized for Bangladesh's farms, seasons, and soil.",
+            "কৃষিবন্ধু বৃহৎ ভাষা মডেল, কম্পিউটার ভিশন, স্যাটেলাইট বুদ্ধিমত্তা এবং স্থানীয় কৃষি জ্ঞানকে একটি ভয়েস-ফার্স্ট সহকারীতে একত্র করে — বাংলাদেশের জমি, মৌসুম ও মাটির জন্য বিশেষায়িত।"
           )}
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-2">
@@ -893,7 +893,7 @@ function Testimonials() {
     { name: t("Rahim Uddin", "রহিম উদ্দিন"), role: t("Farmer, Rangpur", "কৃষক, রংপুর"), quote: "আমি বাংলায় প্রশ্ন করি, AI বাংলায় উত্তর দেয়। এই প্রথম প্রযুক্তি আমার জন্য কাজ করছে।", icon: Users, bn: true },
     { name: t("Dr. Fatima Rahman", "ড. ফাতিমা রহমান"), role: t("Agricultural Researcher, BARI", "কৃষি গবেষক, বারি"), quote: t("The disease detection accuracy on rice varieties is remarkable. It's a genuine research-grade tool put in every farmer's pocket.", "ধানের জাতের রোগ শনাক্তকরণের নির্ভুলতা অসাধারণ। এটি প্রতিটি কৃষকের পকেটে থাকা প্রকৃত গবেষণা-মানের টুল।"), icon: Award, bn: false },
     { name: t("Nasir Ahmed", "নাসির আহমেদ"), role: t("Upazila Agriculture Officer", "উপজেলা কৃষি কর্মকর্তা"), quote: t("For the first time, my farmers reach me with a diagnosis already in hand. My job is faster and much more effective.", "প্রথমবারের মতো, আমার কৃষকরা রোগ নির্ণয় হাতে নিয়ে আমার কাছে আসেন। আমার কাজ দ্রুত ও কার্যকর হয়েছে।"), icon: ShieldCheck, bn: false },
-    { name: t("Green Delta NGO", "গ্রিন ডেল্টা এনজিও"), role: t("Field Operations Lead", "ফিল্ড অপারেশন প্রধান"), quote: t("We deployed Untitled across 12 districts. Yields improved measurably in one season.", "আমরা ১২টি জেলায় আনটাইটেল্ড প্রয়োগ করেছি। এক মৌসুমেই ফলন উল্লেখযোগ্যভাবে বেড়েছে।"), icon: TrendingUp, bn: false },
+    { name: t("Green Delta NGO", "গ্রিন ডেল্টা এনজিও"), role: t("Field Operations Lead", "ফিল্ড অপারেশন প্রধান"), quote: t("We deployed KrishiBondhu across 12 districts. Yields improved measurably in one season.", "আমরা ১২টি জেলায় কৃষিবন্ধু প্রয়োগ করেছি। এক মৌসুমেই ফলন উল্লেখযোগ্যভাবে বেড়েছে।"), icon: TrendingUp, bn: false },
   ];
   return (
     <section className="py-28 bg-card/40 border-y border-border/60">
@@ -996,7 +996,7 @@ function Footer() {
           <div>
             <div className="flex items-center gap-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary"><Leaf className="h-5 w-5 text-primary-foreground" /></div>
-              <div><div className="font-display font-semibold">{t("Untitled","আনটাইটেল্ড")}</div><div className="text-xs text-muted-foreground -mt-0.5">{t("Farming AI Companion","কৃষি এআই সহচর")}</div></div>
+              <div><div className="font-display font-semibold">{t("KrishiBondhu","কৃষিবন্ধু")}</div><div className="text-xs text-muted-foreground -mt-0.5">{t("KrishiBondhu AI","কৃষিবন্ধু এআই")}</div></div>
             </div>
             <p className="mt-4 text-sm text-muted-foreground max-w-xs">{t("Empowering Bangladesh's agriculture through localized AI, satellite intelligence, and voice-first interaction.","স্থানীয়ায়িত এআই, স্যাটেলাইট বুদ্ধিমত্তা ও ভয়েস-ফার্স্ট ইন্টারঅ্যাকশনের মাধ্যমে বাংলাদেশের কৃষিকে ক্ষমতায়ন।")}</p>
             <div className="mt-5 flex gap-3">
@@ -1017,7 +1017,7 @@ function Footer() {
           ))}
         </div>
         <div className="mt-12 pt-6 border-t border-border/60 flex flex-wrap items-center justify-between gap-4 text-xs text-muted-foreground">
-          <div>{t("© 2026 Untitled Farming AI Companion · Made for Bangladesh 🇧🇩","© ২০২৬ আনটাইটেল্ড কৃষি এআই সহচর · বাংলাদেশের জন্য তৈরি 🇧🇩")}</div>
+          <div>{t("© 2026 KrishiBondhu AI · Made for Bangladesh 🇧🇩","© ২০২৬ কৃষিবন্ধু এআই · বাংলাদেশের জন্য তৈরি 🇧🇩")}</div>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {t("24/7 AI","২৪/৭ এআই")}</span>
             <span className="flex items-center gap-1"><Target className="h-3 w-3" /> {t("95% accuracy","৯৫% নির্ভুলতা")}</span>
