@@ -17,11 +17,54 @@ export const Route = createFileRoute("/")({
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
-      <Sparkles className="h-3.5 w-3.5" />
+      <Sparkles className="h-3.5 w-3.5 animate-pulse" />
       {children}
     </div>
   );
 }
+
+function Reveal({
+  children,
+  delay = 0,
+  as: Tag = "div",
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  as?: keyof React.JSX.IntrinsicElements;
+  className?: string;
+}) {
+  const ref = useRef<HTMLElement | null>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setVisible(true);
+            obs.disconnect();
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  const Comp = Tag as React.ElementType;
+  return (
+    <Comp
+      ref={ref as React.Ref<HTMLElement>}
+      className={`reveal ${visible ? "reveal-visible" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </Comp>
+  );
+}
+
 
 function Button({
   children, variant = "primary", size = "md", href, onClick,
@@ -85,15 +128,18 @@ function Hero() {
   return (
     <section className="relative overflow-hidden pt-32 pb-24 bg-gradient-hero">
       <div className="absolute inset-0 bg-gradient-mesh pointer-events-none" />
+      <div aria-hidden className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/20 blur-3xl animate-blob" />
+      <div aria-hidden className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-primary-glow/25 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center">
           <div className="animate-fade-up">
             <SectionLabel>Your AI Farming Companion</SectionLabel>
             <h1 className="mt-6 text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
               Bangladesh's{" "}
-              <span className="text-gradient">AI-Powered</span>{" "}
+              <span className="text-gradient animate-gradient inline-block">AI-Powered</span>{" "}
               Farming Assistant
             </h1>
+
             <p className="mt-6 max-w-xl text-lg text-muted-foreground leading-relaxed">
               An intelligent agriculture platform that helps farmers make better decisions using voice conversations, crop disease detection, satellite imagery, soil intelligence, weather forecasting, and localized agricultural knowledge.
             </p>
@@ -213,13 +259,15 @@ function Problem() {
           <p className="mt-4 text-lg text-muted-foreground">Every season, farmers across Bangladesh lose yield to preventable problems. We built Untitled to close that gap.</p>
         </div>
         <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {problems.map((p) => (
-            <div key={p.text} className="group relative rounded-2xl border border-border bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-elevated hover:border-primary/40">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-destructive/10 text-destructive">
-                <p.icon className="h-5 w-5" />
+          {problems.map((p, i) => (
+            <Reveal key={p.text} delay={i * 80}>
+              <div className="group relative rounded-2xl border border-border bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-elevated hover:border-primary/40">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-destructive/10 text-destructive transition-transform group-hover:scale-110 group-hover:rotate-3">
+                  <p.icon className="h-5 w-5" />
+                </div>
+                <p className="mt-4 font-medium leading-relaxed">{p.text}</p>
               </div>
-              <p className="mt-4 font-medium leading-relaxed">{p.text}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -420,18 +468,18 @@ function Modules() {
         <div className="mt-16 space-y-24">
           {modules.map((m, i) => (
             <div key={m.title} className={`grid lg:grid-cols-2 gap-10 items-center ${i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
-              <div>
+              <Reveal className={i % 2 === 1 ? "animate-fade-in-right" : "animate-fade-in-left"}>
                 <div className="text-xs font-mono text-primary tracking-widest">{m.tag}</div>
                 <div className="mt-3 flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-primary shadow-glow">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-primary shadow-glow transition-transform hover:scale-110 hover:rotate-6">
                     <m.icon className="h-6 w-6 text-primary-foreground" />
                   </div>
                   <h3 className="font-display text-3xl md:text-4xl font-bold">{m.title}</h3>
                 </div>
                 <p className="mt-4 text-lg text-muted-foreground max-w-lg">{m.desc}</p>
                 <ul className="mt-6 grid sm:grid-cols-2 gap-2 max-w-lg">
-                  {m.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
+                  {m.features.map((f, fi) => (
+                    <li key={f} className="flex items-center gap-2 text-sm reveal reveal-visible" style={{ animation: `fade-up 0.5s ease-out both`, animationDelay: `${200 + fi * 60}ms` }}>
                       <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                         <Check className="h-3 w-3 text-primary" />
                       </div>
@@ -439,8 +487,8 @@ function Modules() {
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div><ModuleDemo kind={m.demo} /></div>
+              </Reveal>
+              <Reveal delay={150}><ModuleDemo kind={m.demo} /></Reveal>
             </div>
           ))}
         </div>
@@ -449,8 +497,8 @@ function Modules() {
           <h3 className="font-display text-2xl font-semibold">Supported crops</h3>
           <p className="mt-2 text-muted-foreground">Over 50 crops with expanding coverage every season.</p>
           <div className="mt-6 flex flex-wrap gap-2">
-            {["Rice","Potato","Tomato","Jute","Mustard","Wheat","Banana","Mango","Corn","Vegetables","Onion","Chili","Lentil","Sugarcane"].map(c=>(
-              <span key={c} className="rounded-full border border-border bg-background px-4 py-2 text-sm hover:border-primary/40 hover:text-primary transition">{c}</span>
+            {["Rice","Potato","Tomato","Jute","Mustard","Wheat","Banana","Mango","Corn","Vegetables","Onion","Chili","Lentil","Sugarcane"].map((c, i)=>(
+              <span key={c} style={{ animationDelay: `${i * 40}ms` }} className="animate-zoom-in rounded-full border border-border bg-background px-4 py-2 text-sm hover:border-primary/40 hover:text-primary hover:scale-105 transition">{c}</span>
             ))}
           </div>
         </div>
@@ -536,11 +584,13 @@ function Tech() {
           <h2 className="mt-4 text-4xl md:text-5xl font-bold">Built on modern AI infrastructure</h2>
         </div>
         <div className="mt-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {tech.map((t) => (
-            <div key={t.name} className="group rounded-2xl border border-border bg-background p-5 text-center transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-card">
-              <t.icon className="h-6 w-6 mx-auto text-primary" />
-              <div className="mt-2 text-sm font-medium">{t.name}</div>
-            </div>
+          {tech.map((t, i) => (
+            <Reveal key={t.name} delay={i * 50}>
+              <div className="group rounded-2xl border border-border bg-background p-5 text-center transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-card">
+                <t.icon className="h-6 w-6 mx-auto text-primary transition-transform group-hover:scale-125 group-hover:rotate-6" />
+                <div className="mt-2 text-sm font-medium">{t.name}</div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -564,10 +614,12 @@ function Roadmap() {
         </div>
         <div className="mt-14 grid md:grid-cols-3 gap-4">
           {items.map((it, i) => (
-            <div key={it} className="rounded-2xl border border-border bg-card p-6 shadow-card hover:border-primary/40 transition">
-              <div className="text-xs font-mono text-primary">Q{Math.floor(i / 3) + 1} · Coming</div>
-              <div className="mt-2 font-display text-lg font-semibold">{it}</div>
-            </div>
+            <Reveal key={it} delay={i * 80}>
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-card hover:border-primary/40 hover:-translate-y-1 transition">
+                <div className="text-xs font-mono text-primary">Q{Math.floor(i / 3) + 1} · Coming</div>
+                <div className="mt-2 font-display text-lg font-semibold">{it}</div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -590,21 +642,23 @@ function Testimonials() {
           <h2 className="mt-4 text-4xl md:text-5xl font-bold">Trusted across the field</h2>
         </div>
         <div className="mt-12 grid md:grid-cols-2 gap-5">
-          {list.map((t) => (
-            <div key={t.name} className="rounded-3xl border border-border bg-background p-8 shadow-card">
-              <p className="text-lg leading-relaxed" style={t.bn ? { fontFamily: "Noto Sans Bengali, sans-serif" } : {}}>
-                "{t.quote}"
-              </p>
-              <div className="mt-6 flex items-center gap-3">
-                <div className="h-11 w-11 rounded-full bg-gradient-primary flex items-center justify-center">
-                  <t.icon className="h-5 w-5 text-primary-foreground" />
-                </div>
-                <div>
-                  <div className="font-semibold">{t.name}</div>
-                  <div className="text-sm text-muted-foreground">{t.role}</div>
+          {list.map((t, i) => (
+            <Reveal key={t.name} delay={i * 100}>
+              <div className="rounded-3xl border border-border bg-background p-8 shadow-card hover:-translate-y-1 hover:shadow-elevated transition-all">
+                <p className="text-lg leading-relaxed" style={t.bn ? { fontFamily: "Noto Sans Bengali, sans-serif" } : {}}>
+                  "{t.quote}"
+                </p>
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="h-11 w-11 rounded-full bg-gradient-primary flex items-center justify-center">
+                    <t.icon className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <div className="font-semibold">{t.name}</div>
+                    <div className="text-sm text-muted-foreground">{t.role}</div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
