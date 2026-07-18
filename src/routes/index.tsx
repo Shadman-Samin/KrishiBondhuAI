@@ -259,13 +259,15 @@ function Problem() {
           <p className="mt-4 text-lg text-muted-foreground">Every season, farmers across Bangladesh lose yield to preventable problems. We built Untitled to close that gap.</p>
         </div>
         <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {problems.map((p) => (
-            <div key={p.text} className="group relative rounded-2xl border border-border bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-elevated hover:border-primary/40">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-destructive/10 text-destructive">
-                <p.icon className="h-5 w-5" />
+          {problems.map((p, i) => (
+            <Reveal key={p.text} delay={i * 80}>
+              <div className="group relative rounded-2xl border border-border bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-elevated hover:border-primary/40">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-destructive/10 text-destructive transition-transform group-hover:scale-110 group-hover:rotate-3">
+                  <p.icon className="h-5 w-5" />
+                </div>
+                <p className="mt-4 font-medium leading-relaxed">{p.text}</p>
               </div>
-              <p className="mt-4 font-medium leading-relaxed">{p.text}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
