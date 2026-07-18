@@ -912,6 +912,7 @@ function Landing() {
       <main>
         <Hero />
         <Stats />
+        <Marquee />
         <Problem />
         <Solution />
         <Modules />
