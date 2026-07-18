@@ -128,6 +128,8 @@ function Hero() {
   return (
     <section className="relative overflow-hidden pt-32 pb-24 bg-gradient-hero">
       <div className="absolute inset-0 bg-gradient-mesh pointer-events-none" />
+      <div aria-hidden className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/20 blur-3xl animate-blob" />
+      <div aria-hidden className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-primary-glow/25 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center">
           <div className="animate-fade-up">
