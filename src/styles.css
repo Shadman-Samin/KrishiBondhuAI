@@ -222,6 +222,41 @@
 @utility animate-blob { animation: blob-drift 14s ease-in-out infinite; }
 @utility animate-marquee { animation: marquee 30s linear infinite; }
 @utility animate-spin-slow { animation: spin-slow 24s linear infinite; }
+@utility animate-spin-reverse { animation: spin-reverse 30s linear infinite; }
+@utility animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--primary) 35%, transparent) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+@utility animate-caret { animation: caret-blink 1s steps(1) infinite; }
+@utility animate-beam { animation: beam 3.2s ease-in-out infinite; }
+@utility hero-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--primary) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--primary) 12%, transparent) 1px, transparent 1px);
+  background-size: 60px 60px, 60px 60px;
+  mask-image: radial-gradient(ellipse at var(--mx, 50%) var(--my, 40%), black 0%, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at var(--mx, 50%) var(--my, 40%), black 0%, black 30%, transparent 70%);
+  animation: grid-pan 12s linear infinite;
+}
+@utility spotlight {
+  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 40%), color-mix(in oklab, var(--primary-glow) 22%, transparent), transparent 60%);
+  transition: background 0.15s ease-out;
+}
+@utility magnetic {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+@utility tilt-3d {
+  transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.2s ease-out;
+  transform-style: preserve-3d;
+}
+@utility word-flip {
+  display: inline-block;
+  animation: word-in 0.6s cubic-bezier(0.2, 0.9, 0.2, 1.1) both;
+  transform-origin: 50% 100%;
+}
 @utility animate-gradient {
   background-size: 200% 200%;
   animation: gradient-shift 8s ease infinite;
