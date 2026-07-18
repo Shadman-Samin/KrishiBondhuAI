@@ -497,8 +497,8 @@ function Modules() {
           <h3 className="font-display text-2xl font-semibold">Supported crops</h3>
           <p className="mt-2 text-muted-foreground">Over 50 crops with expanding coverage every season.</p>
           <div className="mt-6 flex flex-wrap gap-2">
-            {["Rice","Potato","Tomato","Jute","Mustard","Wheat","Banana","Mango","Corn","Vegetables","Onion","Chili","Lentil","Sugarcane"].map(c=>(
-              <span key={c} className="rounded-full border border-border bg-background px-4 py-2 text-sm hover:border-primary/40 hover:text-primary transition">{c}</span>
+            {["Rice","Potato","Tomato","Jute","Mustard","Wheat","Banana","Mango","Corn","Vegetables","Onion","Chili","Lentil","Sugarcane"].map((c, i)=>(
+              <span key={c} style={{ animationDelay: `${i * 40}ms` }} className="animate-zoom-in rounded-full border border-border bg-background px-4 py-2 text-sm hover:border-primary/40 hover:text-primary hover:scale-105 transition">{c}</span>
             ))}
           </div>
         </div>
