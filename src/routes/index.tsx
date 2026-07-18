@@ -66,6 +66,71 @@ function Reveal({
 }
 
 
+function RotatingWord({ words, interval = 2200 }: { words: string[]; interval?: number }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setI((v) => (v + 1) % words.length), interval);
+    return () => clearInterval(t);
+  }, [words.length, interval]);
+  // widest word sets the width to avoid layout jump
+  const widest = words.reduce((a, b) => (b.length > a.length ? b : a), "");
+  return (
+    <span className="relative inline-flex align-baseline" style={{ perspective: "800px" }}>
+      <span aria-hidden className="invisible whitespace-nowrap">{widest}</span>
+      <span key={i} className="word-flip absolute inset-0 text-gradient animate-gradient whitespace-nowrap">
+        {words[i]}
+      </span>
+      <span aria-hidden className="ml-1 inline-block w-[3px] h-[0.9em] translate-y-[0.15em] bg-primary animate-caret rounded-sm" />
+    </span>
+  );
+}
+
+function MagneticButton({
+  children, variant = "primary", size = "md", href, onClick,
+}: {
+  children: React.ReactNode;
+  variant?: "primary" | "ghost" | "outline";
+  size?: "md" | "lg";
+  href?: string;
+  onClick?: () => void;
+}) {
+  const ref = useRef<HTMLAnchorElement | HTMLButtonElement | null>(null);
+  const handleMove = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - (r.left + r.width / 2);
+    const y = e.clientY - (r.top + r.height / 2);
+    el.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+  };
+  const handleLeave = () => {
+    const el = ref.current;
+    if (el) el.style.transform = "translate(0,0)";
+  };
+  const base = "magnetic inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap relative overflow-hidden";
+  const sizes = { md: "px-5 py-2.5 text-sm", lg: "px-7 py-3.5 text-base" };
+  const variants = {
+    primary: "bg-gradient-primary text-primary-foreground shadow-glow hover:shadow-elevated",
+    outline: "border border-border bg-card/50 text-foreground hover:bg-accent hover:border-primary/40",
+    ghost: "text-foreground hover:bg-accent",
+  };
+  const cls = `${base} ${sizes[size]} ${variants[variant]}`;
+  const inner = (
+    <>
+      <span className="relative z-10 inline-flex items-center gap-2">{children}</span>
+      {variant === "primary" && (
+        <span aria-hidden className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-white/25 blur-md animate-beam" />
+      )}
+    </>
+  );
+  if (href) return (
+    <a ref={ref as React.Ref<HTMLAnchorElement>} href={href} onMouseMove={handleMove} onMouseLeave={handleLeave} className={cls}>{inner}</a>
+  );
+  return (
+    <button ref={ref as React.Ref<HTMLButtonElement>} onMouseMove={handleMove} onMouseLeave={handleLeave} onClick={onClick} className={cls}>{inner}</button>
+  );
+}
+
 function Button({
   children, variant = "primary", size = "md", href, onClick,
 }: {
