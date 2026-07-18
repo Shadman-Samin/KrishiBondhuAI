@@ -468,18 +468,18 @@ function Modules() {
         <div className="mt-16 space-y-24">
           {modules.map((m, i) => (
             <div key={m.title} className={`grid lg:grid-cols-2 gap-10 items-center ${i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
-              <div>
+              <Reveal className={i % 2 === 1 ? "animate-fade-in-right" : "animate-fade-in-left"}>
                 <div className="text-xs font-mono text-primary tracking-widest">{m.tag}</div>
                 <div className="mt-3 flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-primary shadow-glow">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-primary shadow-glow transition-transform hover:scale-110 hover:rotate-6">
                     <m.icon className="h-6 w-6 text-primary-foreground" />
                   </div>
                   <h3 className="font-display text-3xl md:text-4xl font-bold">{m.title}</h3>
                 </div>
                 <p className="mt-4 text-lg text-muted-foreground max-w-lg">{m.desc}</p>
                 <ul className="mt-6 grid sm:grid-cols-2 gap-2 max-w-lg">
-                  {m.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
+                  {m.features.map((f, fi) => (
+                    <li key={f} className="flex items-center gap-2 text-sm reveal reveal-visible" style={{ animation: `fade-up 0.5s ease-out both`, animationDelay: `${200 + fi * 60}ms` }}>
                       <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                         <Check className="h-3 w-3 text-primary" />
                       </div>
@@ -487,8 +487,8 @@ function Modules() {
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div><ModuleDemo kind={m.demo} /></div>
+              </Reveal>
+              <Reveal delay={150}><ModuleDemo kind={m.demo} /></Reveal>
             </div>
           ))}
         </div>
