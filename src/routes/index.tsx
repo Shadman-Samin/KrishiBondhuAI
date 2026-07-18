@@ -642,21 +642,23 @@ function Testimonials() {
           <h2 className="mt-4 text-4xl md:text-5xl font-bold">Trusted across the field</h2>
         </div>
         <div className="mt-12 grid md:grid-cols-2 gap-5">
-          {list.map((t) => (
-            <div key={t.name} className="rounded-3xl border border-border bg-background p-8 shadow-card">
-              <p className="text-lg leading-relaxed" style={t.bn ? { fontFamily: "Noto Sans Bengali, sans-serif" } : {}}>
-                "{t.quote}"
-              </p>
-              <div className="mt-6 flex items-center gap-3">
-                <div className="h-11 w-11 rounded-full bg-gradient-primary flex items-center justify-center">
-                  <t.icon className="h-5 w-5 text-primary-foreground" />
-                </div>
-                <div>
-                  <div className="font-semibold">{t.name}</div>
-                  <div className="text-sm text-muted-foreground">{t.role}</div>
+          {list.map((t, i) => (
+            <Reveal key={t.name} delay={i * 100}>
+              <div className="rounded-3xl border border-border bg-background p-8 shadow-card hover:-translate-y-1 hover:shadow-elevated transition-all">
+                <p className="text-lg leading-relaxed" style={t.bn ? { fontFamily: "Noto Sans Bengali, sans-serif" } : {}}>
+                  "{t.quote}"
+                </p>
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="h-11 w-11 rounded-full bg-gradient-primary flex items-center justify-center">
+                    <t.icon className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <div className="font-semibold">{t.name}</div>
+                    <div className="text-sm text-muted-foreground">{t.role}</div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
