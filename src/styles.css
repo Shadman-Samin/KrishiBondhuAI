@@ -245,7 +245,6 @@
 }
 @utility magnetic {
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-  will-change: transform;
 }
 @utility tilt-3d {
   transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
@@ -268,7 +267,6 @@
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-  will-change: opacity, transform;
 }
 @utility reveal-visible {
   opacity: 1;
@@ -288,4 +286,21 @@
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
+}
+
+/* ponytail: lighter blur on mobile — GPU-bound on low-end devices */
+@media (max-width: 768px) {
+  .glass {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+}
+
+@utility contain-section {
+  contain: layout style;
+}
+
+@utility skip-visibility {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
 }

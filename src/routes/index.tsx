@@ -95,13 +95,18 @@ function MagneticButton({
   onClick?: () => void;
 }) {
   const ref = useRef<HTMLAnchorElement | HTMLButtonElement | null>(null);
+  const rafRef = useRef(0);
   const handleMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = e.clientX - (r.left + r.width / 2);
-    const y = e.clientY - (r.top + r.height / 2);
-    el.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = 0;
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const x = e.clientX - (r.left + r.width / 2);
+      const y = e.clientY - (r.top + r.height / 2);
+      el.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+    });
   };
   const handleLeave = () => {
     const el = ref.current;
@@ -173,7 +178,7 @@ function Nav() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   return (
@@ -211,25 +216,35 @@ function Hero() {
   const { t, lang } = useLang();
   const sectionRef = useRef<HTMLElement | null>(null);
   const tiltRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef(0);
+  const tiltRafRef = useRef(0);
 
   const onSectionMove = (e: React.MouseEvent) => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const mx = ((e.clientX - r.left) / r.width) * 100;
-    const my = ((e.clientY - r.top) / r.height) * 100;
-    el.style.setProperty("--mx", `${mx}%`);
-    el.style.setProperty("--my", `${my}%`);
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = 0;
+      const el = sectionRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const mx = ((e.clientX - r.left) / r.width) * 100;
+      const my = ((e.clientY - r.top) / r.height) * 100;
+      el.style.setProperty("--mx", `${mx}%`);
+      el.style.setProperty("--my", `${my}%`);
+    });
   };
 
   const onTiltMove = (e: React.MouseEvent) => {
-    const el = tiltRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    el.style.setProperty("--ry", `${x * 10}deg`);
-    el.style.setProperty("--rx", `${-y * 10}deg`);
+    if (tiltRafRef.current) return;
+    tiltRafRef.current = requestAnimationFrame(() => {
+      tiltRafRef.current = 0;
+      const el = tiltRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.setProperty("--ry", `${x * 10}deg`);
+      el.style.setProperty("--rx", `${-y * 10}deg`);
+    });
   };
   const onTiltLeave = () => {
     const el = tiltRef.current;
@@ -242,11 +257,18 @@ function Hero() {
     ? ["এআই-চালিত", "ভয়েস-ফার্স্ট", "ডেটা-চালিত", "বাংলা-নেটিভ"]
     : ["AI-Powered", "Voice-First", "Data-Driven", "Bangla-Native"];
 
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (tiltRafRef.current) cancelAnimationFrame(tiltRafRef.current);
+    };
+  }, []);
+
   return (
     <section
       ref={sectionRef}
       onMouseMove={onSectionMove}
-      className="relative overflow-hidden pt-32 pb-24 bg-gradient-hero"
+      className="relative overflow-hidden pt-32 pb-24 bg-gradient-hero contain-section"
     >
       <div className="absolute inset-0 bg-gradient-mesh pointer-events-none" />
       <div aria-hidden className="pointer-events-none absolute inset-0 hero-grid opacity-70" />
@@ -288,7 +310,7 @@ function Hero() {
             onMouseLeave={onTiltLeave}
           >
             <div ref={tiltRef} className="tilt-3d relative rounded-3xl overflow-hidden shadow-elevated border border-border/50">
-              <img src={heroImg} alt="Bangladeshi farmer using AI farming assistant" width={1536} height={1152} className="w-full h-auto" />
+              <img src={heroImg} alt="Bangladeshi farmer using AI farming assistant" width={1536} height={1152} loading="lazy" decoding="async" className="w-full h-auto" />
               <span aria-hidden className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-white/20 blur-lg animate-beam" />
             </div>
             <div className="hidden md:block absolute -left-6 top-10 glass rounded-2xl p-4 shadow-card animate-float w-56">
@@ -367,7 +389,7 @@ function Stats() {
     { label: t("Detection Accuracy", "শনাক্তকরণ নির্ভুলতা"), value: 95, suffix: "%", static: false },
   ];
   return (
-    <section className="py-20 border-y border-border/60 bg-card/40">
+    <section className="py-20 border-y border-border/60 bg-card/40 contain-section skip-visibility">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           {stats.map((s) => (
@@ -396,7 +418,7 @@ function Marquee() {
   ];
   const row = [...items, ...items];
   return (
-    <section aria-label="Supported crops" className="relative py-10 border-y border-border/60 bg-card/40 overflow-hidden">
+    <section aria-label="Supported crops" className="relative py-10 border-y border-border/60 bg-card/40 overflow-hidden contain-section skip-visibility">
       <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
       <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
       <div className="flex w-max animate-marquee gap-10 whitespace-nowrap">
@@ -421,7 +443,7 @@ function Problem() {
     { icon: Satellite, text: t("Satellite data is rarely accessible to farmers", "স্যাটেলাইট তথ্য সাধারণত কৃষকের নাগালের বাইরে") },
   ];
   return (
-    <section className="py-28">
+    <section className="py-28 contain-section skip-visibility">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-2xl">
           <SectionLabel>{t("The Problem", "সমস্যা")}</SectionLabel>
@@ -455,7 +477,7 @@ function Solution() {
     t("Government-ready", "সরকার-প্রস্তুত"),
   ];
   return (
-    <section className="py-28 bg-gradient-hero relative overflow-hidden">
+    <section className="py-28 bg-gradient-hero relative overflow-hidden contain-section skip-visibility">
       <div className="absolute inset-0 bg-gradient-mesh pointer-events-none" />
       <div className="relative mx-auto max-w-4xl px-6 text-center">
         <SectionLabel>{t("The Solution", "সমাধান")}</SectionLabel>
@@ -694,7 +716,7 @@ function Modules() {
     t("Lentil","ডাল"),t("Sugarcane","আখ"),
   ];
   return (
-    <section id="modules" className="py-28">
+    <section id="modules" className="py-28 contain-section skip-visibility">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-2xl">
           <SectionLabel>{t("Core Modules", "মূল মডিউল")}</SectionLabel>
@@ -761,7 +783,7 @@ function Localized() {
     t("Flood risks","বন্যার ঝুঁকি"),
   ];
   return (
-    <section className="py-28 bg-card/40 border-y border-border/60">
+    <section className="py-28 bg-card/40 border-y border-border/60 contain-section skip-visibility">
       <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-12 items-center">
         <div>
           <SectionLabel>{t("Localized AI Knowledge", "স্থানীয়ায়িত এআই জ্ঞান")}</SectionLabel>
@@ -789,7 +811,7 @@ function How() {
     { n: "03", icon: Sparkles, title: t("Get recommendations", "পরামর্শ পান"), desc: t("Personalized guidance in Bangla — organic or chemical, whatever works.", "বাংলায় ব্যক্তিগত পরামর্শ — জৈব বা রাসায়নিক, যা কাজ করে।") },
   ];
   return (
-    <section id="how" className="py-28">
+    <section id="how" className="py-28 contain-section skip-visibility">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-2xl">
           <SectionLabel>{t("How it works", "কিভাবে কাজ করে")}</SectionLabel>
@@ -830,7 +852,7 @@ function Tech() {
     { icon: Mic, name: "Whisper" },
   ];
   return (
-    <section id="tech" className="py-28 bg-card/40 border-y border-border/60">
+    <section id="tech" className="py-28 bg-card/40 border-y border-border/60 contain-section skip-visibility">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-2xl">
           <SectionLabel>{t("Technology", "প্রযুক্তি")}</SectionLabel>
@@ -865,7 +887,7 @@ function Roadmap() {
     t("Carbon footprint monitoring", "কার্বন পদচিহ্ন পর্যবেক্ষণ"),
   ];
   return (
-    <section id="roadmap" className="py-28">
+    <section id="roadmap" className="py-28 contain-section skip-visibility">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-2xl">
           <SectionLabel>{t("Roadmap", "রোডম্যাপ")}</SectionLabel>
@@ -896,7 +918,7 @@ function Testimonials() {
     { name: t("Green Delta NGO", "গ্রিন ডেল্টা এনজিও"), role: t("Field Operations Lead", "ফিল্ড অপারেশন প্রধান"), quote: t("We deployed KrishiBondhu across 12 districts. Yields improved measurably in one season.", "আমরা ১২টি জেলায় কৃষিবন্ধু প্রয়োগ করেছি। এক মৌসুমেই ফলন উল্লেখযোগ্যভাবে বেড়েছে।"), icon: TrendingUp, bn: false },
   ];
   return (
-    <section className="py-28 bg-card/40 border-y border-border/60">
+    <section className="py-28 bg-card/40 border-y border-border/60 contain-section skip-visibility">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-2xl">
           <SectionLabel>{t("Testimonials", "প্রশংসাপত্র")}</SectionLabel>
@@ -939,7 +961,7 @@ function FAQ() {
   ];
   const [open, setOpen] = useState<number>(0);
   return (
-    <section id="faq" className="py-28">
+    <section id="faq" className="py-28 contain-section skip-visibility">
       <div className="mx-auto max-w-3xl px-6">
         <div className="text-center">
           <SectionLabel>{t("FAQ", "প্রশ্নোত্তর")}</SectionLabel>
@@ -964,7 +986,7 @@ function FAQ() {
 function CTA() {
   const { t } = useLang();
   return (
-    <section className="py-28">
+    <section className="py-28 contain-section skip-visibility">
       <div className="mx-auto max-w-6xl px-6">
         <div className="relative overflow-hidden rounded-3xl bg-gradient-primary p-12 md:p-20 shadow-elevated text-center">
           <div className="absolute inset-0 bg-gradient-mesh opacity-40" />
