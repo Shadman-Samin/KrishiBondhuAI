@@ -584,11 +584,13 @@ function Tech() {
           <h2 className="mt-4 text-4xl md:text-5xl font-bold">Built on modern AI infrastructure</h2>
         </div>
         <div className="mt-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {tech.map((t) => (
-            <div key={t.name} className="group rounded-2xl border border-border bg-background p-5 text-center transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-card">
-              <t.icon className="h-6 w-6 mx-auto text-primary" />
-              <div className="mt-2 text-sm font-medium">{t.name}</div>
-            </div>
+          {tech.map((t, i) => (
+            <Reveal key={t.name} delay={i * 50}>
+              <div className="group rounded-2xl border border-border bg-background p-5 text-center transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-card">
+                <t.icon className="h-6 w-6 mx-auto text-primary transition-transform group-hover:scale-125 group-hover:rotate-6" />
+                <div className="mt-2 text-sm font-medium">{t.name}</div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
