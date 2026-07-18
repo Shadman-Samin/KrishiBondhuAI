@@ -66,6 +66,71 @@ function Reveal({
 }
 
 
+function RotatingWord({ words, interval = 2200 }: { words: string[]; interval?: number }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setI((v) => (v + 1) % words.length), interval);
+    return () => clearInterval(t);
+  }, [words.length, interval]);
+  // widest word sets the width to avoid layout jump
+  const widest = words.reduce((a, b) => (b.length > a.length ? b : a), "");
+  return (
+    <span className="relative inline-flex align-baseline" style={{ perspective: "800px" }}>
+      <span aria-hidden className="invisible whitespace-nowrap">{widest}</span>
+      <span key={i} className="word-flip absolute inset-0 text-gradient animate-gradient whitespace-nowrap">
+        {words[i]}
+      </span>
+      <span aria-hidden className="ml-1 inline-block w-[3px] h-[0.9em] translate-y-[0.15em] bg-primary animate-caret rounded-sm" />
+    </span>
+  );
+}
+
+function MagneticButton({
+  children, variant = "primary", size = "md", href, onClick,
+}: {
+  children: React.ReactNode;
+  variant?: "primary" | "ghost" | "outline";
+  size?: "md" | "lg";
+  href?: string;
+  onClick?: () => void;
+}) {
+  const ref = useRef<HTMLAnchorElement | HTMLButtonElement | null>(null);
+  const handleMove = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - (r.left + r.width / 2);
+    const y = e.clientY - (r.top + r.height / 2);
+    el.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+  };
+  const handleLeave = () => {
+    const el = ref.current;
+    if (el) el.style.transform = "translate(0,0)";
+  };
+  const base = "magnetic inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap relative overflow-hidden";
+  const sizes = { md: "px-5 py-2.5 text-sm", lg: "px-7 py-3.5 text-base" };
+  const variants = {
+    primary: "bg-gradient-primary text-primary-foreground shadow-glow hover:shadow-elevated",
+    outline: "border border-border bg-card/50 text-foreground hover:bg-accent hover:border-primary/40",
+    ghost: "text-foreground hover:bg-accent",
+  };
+  const cls = `${base} ${sizes[size]} ${variants[variant]}`;
+  const inner = (
+    <>
+      <span className="relative z-10 inline-flex items-center gap-2">{children}</span>
+      {variant === "primary" && (
+        <span aria-hidden className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-white/25 blur-md animate-beam" />
+      )}
+    </>
+  );
+  if (href) return (
+    <a ref={ref as React.Ref<HTMLAnchorElement>} href={href} onMouseMove={handleMove} onMouseLeave={handleLeave} className={cls}>{inner}</a>
+  );
+  return (
+    <button ref={ref as React.Ref<HTMLButtonElement>} onMouseMove={handleMove} onMouseLeave={handleLeave} onClick={onClick} className={cls}>{inner}</button>
+  );
+}
+
 function Button({
   children, variant = "primary", size = "md", href, onClick,
 }: {
@@ -125,9 +190,44 @@ function Nav() {
 }
 
 function Hero() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const tiltRef = useRef<HTMLDivElement | null>(null);
+
+  const onSectionMove = (e: React.MouseEvent) => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const mx = ((e.clientX - r.left) / r.width) * 100;
+    const my = ((e.clientY - r.top) / r.height) * 100;
+    el.style.setProperty("--mx", `${mx}%`);
+    el.style.setProperty("--my", `${my}%`);
+  };
+
+  const onTiltMove = (e: React.MouseEvent) => {
+    const el = tiltRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    el.style.setProperty("--ry", `${x * 10}deg`);
+    el.style.setProperty("--rx", `${-y * 10}deg`);
+  };
+  const onTiltLeave = () => {
+    const el = tiltRef.current;
+    if (!el) return;
+    el.style.setProperty("--ry", `0deg`);
+    el.style.setProperty("--rx", `0deg`);
+  };
+
   return (
-    <section className="relative overflow-hidden pt-32 pb-24 bg-gradient-hero">
+    <section
+      ref={sectionRef}
+      onMouseMove={onSectionMove}
+      className="relative overflow-hidden pt-32 pb-24 bg-gradient-hero"
+    >
       <div className="absolute inset-0 bg-gradient-mesh pointer-events-none" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 hero-grid opacity-70" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 spotlight" />
       <div aria-hidden className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/20 blur-3xl animate-blob" />
       <div aria-hidden className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-primary-glow/25 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
       <div className="relative mx-auto max-w-7xl px-6">
@@ -136,7 +236,8 @@ function Hero() {
             <SectionLabel>Your AI Farming Companion</SectionLabel>
             <h1 className="mt-6 text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
               Bangladesh's{" "}
-              <span className="text-gradient animate-gradient inline-block">AI-Powered</span>{" "}
+              <RotatingWord words={["AI-Powered", "Voice-First", "Data-Driven", "Bangla-Native"]} />{" "}
+              <br className="hidden sm:block" />
               Farming Assistant
             </h1>
 
@@ -144,8 +245,8 @@ function Hero() {
               An intelligent agriculture platform that helps farmers make better decisions using voice conversations, crop disease detection, satellite imagery, soil intelligence, weather forecasting, and localized agricultural knowledge.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button size="lg">Get Started <ArrowRight className="h-4 w-4" /></Button>
-              <Button size="lg" variant="outline"><Play className="h-4 w-4" /> Watch Demo</Button>
+              <MagneticButton size="lg">Get Started <ArrowRight className="h-4 w-4" /></MagneticButton>
+              <MagneticButton size="lg" variant="outline"><Play className="h-4 w-4" /> Watch Demo</MagneticButton>
             </div>
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Bangla voice-first</div>
@@ -154,15 +255,23 @@ function Hero() {
             </div>
           </div>
 
-          <div className="relative animate-fade-up" style={{ animationDelay: "150ms" }}>
-            <div className="relative rounded-3xl overflow-hidden shadow-elevated border border-border/50">
+          <div
+            className="relative animate-fade-up"
+            style={{ animationDelay: "150ms" }}
+            onMouseMove={onTiltMove}
+            onMouseLeave={onTiltLeave}
+          >
+            <div ref={tiltRef} className="tilt-3d relative rounded-3xl overflow-hidden shadow-elevated border border-border/50">
               <img src={heroImg} alt="Bangladeshi farmer using AI farming assistant" width={1536} height={1152} className="w-full h-auto" />
+              {/* sweeping light beam */}
+              <span aria-hidden className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-white/20 blur-lg animate-beam" />
             </div>
             <div className="hidden md:block absolute -left-6 top-10 glass rounded-2xl p-4 shadow-card animate-float w-56">
               <div className="flex items-center gap-2 text-xs text-muted-foreground"><Leaf className="h-3.5 w-3.5 text-primary" /> Crop Health</div>
               <div className="mt-2 font-display text-2xl font-semibold">92% <span className="text-xs font-normal text-primary">Excellent</span></div>
-              <div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden">
+              <div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden relative">
                 <div className="h-full w-[92%] bg-gradient-primary" />
+                <div aria-hidden className="absolute inset-0 animate-shimmer opacity-70" />
               </div>
             </div>
             <div className="hidden md:block absolute -right-4 bottom-16 glass rounded-2xl p-4 shadow-card animate-float w-60" style={{ animationDelay: "1s" }}>
@@ -170,10 +279,19 @@ function Hero() {
               <div className="mt-1 font-display text-base font-semibold">Rice Blast · 87%</div>
               <div className="mt-1 text-[11px] text-muted-foreground">Apply Tricyclazole within 3 days</div>
             </div>
-            <div className="hidden lg:block absolute -bottom-6 left-8 glass rounded-2xl p-3 shadow-card animate-float w-48" style={{ animationDelay: "2s" }}>
-              <div className="flex items-center gap-2">
-                <div className="h-9 w-9 rounded-full bg-gradient-primary flex items-center justify-center animate-pulse-ring">
-                  <Mic className="h-4 w-4 text-primary-foreground" />
+            <div className="hidden lg:block absolute -bottom-6 left-8 glass rounded-2xl p-3 shadow-card animate-float w-52" style={{ animationDelay: "2s" }}>
+              <div className="flex items-center gap-3">
+                <div className="relative h-11 w-11">
+                  {/* orbiting satellites */}
+                  <div className="absolute inset-0 animate-spin-slow">
+                    <span className="absolute left-1/2 top-1/2 -ml-1 -mt-1 h-2 w-2 rounded-full bg-primary" style={{ transform: "translateX(22px)" }} />
+                  </div>
+                  <div className="absolute inset-0 animate-spin-reverse">
+                    <span className="absolute left-1/2 top-1/2 -ml-[3px] -mt-[3px] h-1.5 w-1.5 rounded-full bg-primary-glow" style={{ transform: "translateX(-18px)" }} />
+                  </div>
+                  <div className="absolute inset-1 rounded-full bg-gradient-primary flex items-center justify-center animate-pulse-ring">
+                    <Mic className="h-4 w-4 text-primary-foreground" />
+                  </div>
                 </div>
                 <div>
                   <div className="text-xs font-medium">Listening…</div>
@@ -240,6 +358,30 @@ function Stats() {
     </section>
   );
 }
+
+function Marquee() {
+  const items = [
+    "🌾 Rice", "🌽 Maize", "🥔 Potato", "🍅 Tomato", "🥬 Cabbage", "🌶️ Chili",
+    "🧅 Onion", "🥒 Cucumber", "🍆 Eggplant", "🫛 Lentil", "🌱 Jute", "🍌 Banana",
+    "🥭 Mango", "🫘 Mustard", "🍉 Watermelon", "🌰 Groundnut",
+  ];
+  const row = [...items, ...items];
+  return (
+    <section aria-label="Supported crops" className="relative py-10 border-y border-border/60 bg-card/40 overflow-hidden">
+      <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
+      <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
+      <div className="flex w-max animate-marquee gap-10 whitespace-nowrap">
+        {row.map((c, i) => (
+          <span key={i} className="text-lg font-display font-medium text-muted-foreground hover:text-primary transition-colors">
+            {c}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+
 
 function Problem() {
   const problems = [
@@ -770,6 +912,7 @@ function Landing() {
       <main>
         <Hero />
         <Stats />
+        <Marquee />
         <Problem />
         <Solution />
         <Modules />
