@@ -614,10 +614,12 @@ function Roadmap() {
         </div>
         <div className="mt-14 grid md:grid-cols-3 gap-4">
           {items.map((it, i) => (
-            <div key={it} className="rounded-2xl border border-border bg-card p-6 shadow-card hover:border-primary/40 transition">
-              <div className="text-xs font-mono text-primary">Q{Math.floor(i / 3) + 1} · Coming</div>
-              <div className="mt-2 font-display text-lg font-semibold">{it}</div>
-            </div>
+            <Reveal key={it} delay={i * 80}>
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-card hover:border-primary/40 hover:-translate-y-1 transition">
+                <div className="text-xs font-mono text-primary">Q{Math.floor(i / 3) + 1} · Coming</div>
+                <div className="mt-2 font-display text-lg font-semibold">{it}</div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
