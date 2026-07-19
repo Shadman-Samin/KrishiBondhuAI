@@ -9,38 +9,144 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardWeatherRouteImport } from './routes/dashboard/weather'
+import { Route as DashboardSoilRouteImport } from './routes/dashboard/soil'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
+import { Route as DashboardMarketplaceRouteImport } from './routes/dashboard/marketplace'
+import { Route as DashboardDiseaseRouteImport } from './routes/dashboard/disease'
+import { Route as DashboardCropCalendarRouteImport } from './routes/dashboard/crop-calendar'
 
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardWeatherRoute = DashboardWeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSoilRoute = DashboardSoilRouteImport.update({
+  id: '/soil',
+  path: '/soil',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardMarketplaceRoute = DashboardMarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardDiseaseRoute = DashboardDiseaseRouteImport.update({
+  id: '/disease',
+  path: '/disease',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardCropCalendarRoute = DashboardCropCalendarRouteImport.update({
+  id: '/crop-calendar',
+  path: '/crop-calendar',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard/crop-calendar': typeof DashboardCropCalendarRoute
+  '/dashboard/disease': typeof DashboardDiseaseRoute
+  '/dashboard/marketplace': typeof DashboardMarketplaceRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/soil': typeof DashboardSoilRoute
+  '/dashboard/weather': typeof DashboardWeatherRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard/crop-calendar': typeof DashboardCropCalendarRoute
+  '/dashboard/disease': typeof DashboardDiseaseRoute
+  '/dashboard/marketplace': typeof DashboardMarketplaceRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/soil': typeof DashboardSoilRoute
+  '/dashboard/weather': typeof DashboardWeatherRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard/crop-calendar': typeof DashboardCropCalendarRoute
+  '/dashboard/disease': typeof DashboardDiseaseRoute
+  '/dashboard/marketplace': typeof DashboardMarketplaceRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/soil': typeof DashboardSoilRoute
+  '/dashboard/weather': typeof DashboardWeatherRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/dashboard/crop-calendar'
+    | '/dashboard/disease'
+    | '/dashboard/marketplace'
+    | '/dashboard/settings'
+    | '/dashboard/soil'
+    | '/dashboard/weather'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/dashboard/crop-calendar'
+    | '/dashboard/disease'
+    | '/dashboard/marketplace'
+    | '/dashboard/settings'
+    | '/dashboard/soil'
+    | '/dashboard/weather'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/dashboard/crop-calendar'
+    | '/dashboard/disease'
+    | '/dashboard/marketplace'
+    | '/dashboard/settings'
+    | '/dashboard/soil'
+    | '/dashboard/weather'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,12 +154,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/weather': {
+      id: '/dashboard/weather'
+      path: '/weather'
+      fullPath: '/dashboard/weather'
+      preLoaderRoute: typeof DashboardWeatherRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/soil': {
+      id: '/dashboard/soil'
+      path: '/soil'
+      fullPath: '/dashboard/soil'
+      preLoaderRoute: typeof DashboardSoilRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/marketplace': {
+      id: '/dashboard/marketplace'
+      path: '/marketplace'
+      fullPath: '/dashboard/marketplace'
+      preLoaderRoute: typeof DashboardMarketplaceRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/disease': {
+      id: '/dashboard/disease'
+      path: '/disease'
+      fullPath: '/dashboard/disease'
+      preLoaderRoute: typeof DashboardDiseaseRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/crop-calendar': {
+      id: '/dashboard/crop-calendar'
+      path: '/crop-calendar'
+      fullPath: '/dashboard/crop-calendar'
+      preLoaderRoute: typeof DashboardCropCalendarRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
+interface DashboardRouteChildren {
+  DashboardCropCalendarRoute: typeof DashboardCropCalendarRoute
+  DashboardDiseaseRoute: typeof DashboardDiseaseRoute
+  DashboardMarketplaceRoute: typeof DashboardMarketplaceRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardSoilRoute: typeof DashboardSoilRoute
+  DashboardWeatherRoute: typeof DashboardWeatherRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardCropCalendarRoute: DashboardCropCalendarRoute,
+  DashboardDiseaseRoute: DashboardDiseaseRoute,
+  DashboardMarketplaceRoute: DashboardMarketplaceRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardSoilRoute: DashboardSoilRoute,
+  DashboardWeatherRoute: DashboardWeatherRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

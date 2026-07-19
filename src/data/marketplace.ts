@@ -1,0 +1,158 @@
+export type Listing = {
+  id: number;
+  title: string;
+  titleBn: string;
+  type: "sell" | "buy";
+  crop: string;
+  cropBn: string;
+  price: number;
+  unit: string;
+  quantity: string;
+  location: string;
+  locationBn: string;
+  date: string;
+  seller: string;
+  sellerBn: string;
+};
+
+export const MARKET_LISTINGS: Listing[] = [
+  {
+    id: 1,
+    title: "Premium Boro Rice",
+    titleBn: "প্রিমিয়াম বোরো ধান",
+    type: "sell",
+    crop: "Rice",
+    cropBn: "ধান",
+    price: 38,
+    unit: "kg",
+    quantity: "5 tons",
+    location: "Comilla",
+    locationBn: "কুমিল্লা",
+    date: "Jul 19",
+    seller: "Abdur Rahman",
+    sellerBn: "আব্দুর রহমান",
+  },
+  {
+    id: 2,
+    title: "Fresh Jute Fiber",
+    titleBn: "তাজা পাটের আঁশ",
+    type: "sell",
+    crop: "Jute",
+    cropBn: "পাট",
+    price: 55,
+    unit: "kg",
+    quantity: "2 tons",
+    location: "Rajshahi",
+    locationBn: "রাজশাহী",
+    date: "Jul 18",
+    seller: "Karimullah Sardar",
+    sellerBn: "করিমুল্লাহ সরদার",
+  },
+  {
+    id: 3,
+    title: "Organic Mustard Seeds",
+    titleBn: "জৈব সরিষার বীজ",
+    type: "sell",
+    crop: "Mustard",
+    cropBn: "সরিষা",
+    price: 120,
+    unit: "kg",
+    quantity: "500 kg",
+    location: "Rangpur",
+    locationBn: "রংপুর",
+    date: "Jul 18",
+    seller: "Fazlul Haque",
+    sellerBn: "ফজলুল হক",
+  },
+  {
+    id: 4,
+    title: "Looking to Buy Wheat",
+    titleBn: "গম কিনতে চাই",
+    type: "buy",
+    crop: "Wheat",
+    cropBn: "গম",
+    price: 42,
+    unit: "kg",
+    quantity: "1 ton",
+    location: "Dhaka",
+    locationBn: "ঢাকা",
+    date: "Jul 19",
+    seller: "Karwan Bazar Traders",
+    sellerBn: "কারওয়ান বাজার ব্যবসায়ী",
+  },
+  {
+    id: 5,
+    title: "Fresh Tomatoes",
+    titleBn: "তাজা টমেটো",
+    type: "sell",
+    crop: "Tomato",
+    cropBn: "টমেটো",
+    price: 45,
+    unit: "kg",
+    quantity: "200 kg",
+    location: "Jessore",
+    locationBn: "যশোর",
+    date: "Jul 17",
+    seller: "Monira Begum",
+    sellerBn: "মনিরা বেগম",
+  },
+  {
+    id: 6,
+    title: "Potato Bulk Order",
+    titleBn: "আলু বাল্ক অর্ডার",
+    type: "buy",
+    crop: "Potato",
+    cropBn: "আলু",
+    price: 28,
+    unit: "kg",
+    quantity: "10 tons",
+    location: "Tangail",
+    locationBn: "টাঙ্গাইল",
+    date: "Jul 19",
+    seller: "Momin Uddin Ltd",
+    sellerBn: "মোমিন উদ্দিন লিমিটেড",
+  },
+  {
+    id: 7,
+    title: "Banana (Cavendish)",
+    titleBn: "কলা (ক্যাভেন্ডিশ)",
+    type: "sell",
+    crop: "Banana",
+    cropBn: "কলা",
+    price: 30,
+    unit: "dozen",
+    quantity: "500 dozen",
+    location: "Chittagong",
+    locationBn: "চট্টগ্রাম",
+    date: "Jul 18",
+    seller: "Habibullah Mia",
+    sellerBn: "হাবিবুল্লাহ মিয়া",
+  },
+  {
+    id: 8,
+    title: "Mung Bean Harvest",
+    titleBn: "মুগ ফসল",
+    type: "sell",
+    crop: "Mung Bean",
+    cropBn: "মুগ",
+    price: 95,
+    unit: "kg",
+    quantity: "800 kg",
+    location: "Bogra",
+    locationBn: "বগুড়া",
+    date: "Jul 17",
+    seller: "Salma Khatun",
+    sellerBn: "সালমা খাতুন",
+  },
+];
+
+export const PRICE_TREND = [
+  { crop: "Rice (Boro)", cropBn: "ধান (বোরো)", price: 38, change: +2.1 },
+  { crop: "Wheat", cropBn: "গম", price: 42, change: -0.8 },
+  { crop: "Jute", cropBn: "পাট", price: 55, change: +5.2 },
+  { crop: "Potato", cropBn: "আলু", price: 28, change: -1.5 },
+  { crop: "Tomato", cropBn: "টমেটো", price: 45, change: +3.0 },
+  { crop: "Mustard", cropBn: "সরিষা", price: 120, change: +1.2 },
+  { crop: "Onion", cropBn: "পেঁয়াজ", price: 60, change: -2.3 },
+  { crop: "Banana", cropBn: "কলা", price: 30, change: +0.5 },
+];

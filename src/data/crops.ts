@@ -1,0 +1,152 @@
+export type Crop = {
+  name: string;
+  nameBn: string;
+  season: "kharif" | "rabi" | "zaid";
+  plantMonth: string;
+  harvestMonth: string;
+  duration: string;
+  waterNeed: "low" | "medium" | "high";
+  soilType: string;
+  soilTypeBn: string;
+  tips: string;
+  tipsBn: string;
+};
+
+export const CROPS: Crop[] = [
+  {
+    name: "Boro Rice",
+    nameBn: "বোরো ধান",
+    season: "rabi",
+    plantMonth: "Nov–Dec",
+    harvestMonth: "Apr–May",
+    duration: "150–170 days",
+    waterNeed: "high",
+    soilType: "Clay loam",
+    soilTypeBn: "কাদামাটি",
+    tips: "Deep standing water needed. Use SRI method for 20% more yield.",
+    tipsBn: "গভীর জলাবস্থা প্রয়োজন। ২০% বেশি ফলনের জন্য SRI পদ্ধতি ব্যবহার করুন।",
+  },
+  {
+    name: "Aman Rice",
+    nameBn: "আমন ধান",
+    season: "kharif",
+    plantMonth: "Jun–Jul",
+    harvestMonth: "Nov–Dec",
+    duration: "150–160 days",
+    waterNeed: "high",
+    soilType: "Alluvial",
+    soilTypeBn: "পলিমাটি",
+    tips: "Transplant seedlings 20–25 days old. Maintain 5–7cm water.",
+    tipsBn: "২০–২৫ দিনের চারা রোপণ করুন। ৫–৭ সেমি জল বজায় রাখুন।",
+  },
+  {
+    name: "Jute",
+    nameBn: "পাট",
+    season: "kharif",
+    plantMonth: "Mar–Apr",
+    harvestMonth: "Jul–Aug",
+    duration: "120–150 days",
+    waterNeed: "medium",
+    soilType: "Loamy",
+    soilTypeBn: "দোআঁশ",
+    tips: "Thin seedlings to 10cm spacing. Early harvest for better fiber.",
+    tipsBn: "১০ সেমি দূরত্বে চারা পাতলা করুন। ভালো আঁশের জন্য তাড়াতাড়ি ফসল কাটুন।",
+  },
+  {
+    name: "Wheat",
+    nameBn: "গম",
+    season: "rabi",
+    plantMonth: "Nov",
+    harvestMonth: "Mar–Apr",
+    duration: "120–150 days",
+    waterNeed: "low",
+    soilType: "Sandy loam",
+    soilTypeBn: "বালুময়",
+    tips: "Sow in well-drained fields. Two irrigations critical at crown root and ear emergence.",
+    tipsBn: "ভালো নিষ্কাশিত ক্ষেতে বীজ বুনুন। মুকুট শিকড় ও কান বের হওয়ার সময় দুইবার সেচ।",
+  },
+  {
+    name: "Potato",
+    nameBn: "আলু",
+    season: "rabi",
+    plantMonth: "Oct–Nov",
+    harvestMonth: "Feb–Mar",
+    duration: "90–120 days",
+    waterNeed: "medium",
+    soilType: "Sandy loam",
+    soilTypeBn: "বালুময়",
+    tips: "Plant seed pieces 15cm deep. Ridge planting reduces disease.",
+    tipsBn: "১৫ সেমি গভীরে বীজ কাটা রোপণ করুন। তৈরিকৃত মাচানে রোপণে রোগ কমে।",
+  },
+  {
+    name: "Mustard",
+    nameBn: "সরিষা",
+    season: "rabi",
+    plantMonth: "Oct–Nov",
+    harvestMonth: "Feb–Mar",
+    duration: "100–120 days",
+    waterNeed: "low",
+    soilType: "Loam",
+    soilTypeBn: "দোআঁশ",
+    tips: "Rainfed cultivation typical. Avoid waterlogging at all stages.",
+    tipsBn: "সাধারণত বৃষ্টিনির্ভর চাষ। সকল পর্যায়ে জলাবদ্ধতা এড়িয়ে চলুন।",
+  },
+  {
+    name: "Mung Bean",
+    nameBn: "মুগ",
+    season: "zaid",
+    plantMonth: "Mar–Apr",
+    harvestMonth: "Jun–Jul",
+    duration: "60–70 days",
+    waterNeed: "low",
+    soilType: "Any well-drained",
+    soilTypeBn: "যেকোনো ভালো নিষ্কাশিত",
+    tips: "Short duration, nitrogen-fixing. Good rotation crop with rice.",
+    tipsBn: "স্বল্প সময়, নাইট্রোজন স্থিরকারী। ধানের সাথে ভালো চক্র ফসল।",
+  },
+  {
+    name: "Banana",
+    nameBn: "কলা",
+    season: "kharif",
+    plantMonth: "Feb–Mar",
+    harvestMonth: "Sep–Dec",
+    duration: "12–14 months",
+    waterNeed: "high",
+    soilType: "Rich loam",
+    soilTypeBn: "সমৃদ্ধ দোআঁশ",
+    tips: "Plant in pits with organic manure. De-sucker to 1 per mat.",
+    tipsBn: "জৈব খাদ্যসহ গর্তে রোপণ করুন। প্রতিটি গাছে ১টি করে চারা রাখুন।",
+  },
+  {
+    name: "Onion",
+    nameBn: "পেঁয়াজ",
+    season: "rabi",
+    plantMonth: "Nov–Dec",
+    harvestMonth: "Mar–Apr",
+    duration: "120–150 days",
+    waterNeed: "medium",
+    soilType: "Sandy loam",
+    soilTypeBn: "বালুময়",
+    tips: "Raised bed cultivation. Stop irrigation 2 weeks before harvest.",
+    tipsBn: "উঁচু বেড়ে চাষ করুন। ফসল কাটার ২ সপ্তাহ আগে সেচ বন্ধ করুন।",
+  },
+  {
+    name: "Tomato",
+    nameBn: "টমেটো",
+    season: "rabi",
+    plantMonth: "Oct–Nov",
+    harvestMonth: "Feb–Apr",
+    duration: "100–130 days",
+    waterNeed: "medium",
+    soilType: "Well-drained loam",
+    soilTypeBn: "ভালো নিষ্কাশিত দোআঁশ",
+    tips: "Stake plants. Remove suckers. Drip irrigation prevents fungal diseases.",
+    tipsBn: "গাছ বাঁধুন। চারা বের করুন। ড্রিপ সেচে ছত্রাক রোগ কমে।",
+  },
+];
+
+export const SEASONS = [
+  { key: "kharif" as const, label: "Kharif (Monsoon)", labelBn: "খরিফ (বর্ষা)" },
+  { key: "rabi" as const, label: "Rabi (Winter)", labelBn: "রবি (শীত)" },
+  { key: "zaid" as const, label: "Zaid (Summer)", labelBn: "জায়াদ (গ্রীষ্ম)" },
+];

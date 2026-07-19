@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Leaf, Mic, ScanLine, Satellite, Sprout, CloudSun, Store, ArrowRight, Play,
@@ -203,8 +203,8 @@ function Nav() {
           </nav>
           <div className="flex items-center gap-2">
             <LangToggle />
-            <a href="#" className="hidden sm:inline text-sm text-muted-foreground hover:text-foreground">{t("Sign in", "সাইন ইন")}</a>
-            <Button size="md">{t("Get Started", "শুরু করুন")} <ArrowRight className="h-4 w-4" /></Button>
+            <Link to="/dashboard" className="hidden sm:inline text-sm text-muted-foreground hover:text-foreground">{t("Sign in", "সাইন ইন")}</Link>
+            <Link to="/dashboard" className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-primary text-primary-foreground shadow-glow hover:scale-[1.03] hover:shadow-elevated transition-all duration-300 px-5 py-2.5 text-sm font-medium">{t("Get Started", "শুরু করুন")} <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </div>
       </div>
@@ -994,7 +994,7 @@ function CTA() {
             <h2 className="font-display text-4xl md:text-6xl font-bold text-primary-foreground">{t("Empower your farm with AI", "এআই দিয়ে আপনার জমিকে ক্ষমতায়ন করুন")}</h2>
             <p className="mt-4 text-lg text-primary-foreground/90 max-w-2xl mx-auto">{t("Join farmers, researchers, and organizations building the future of Bangladesh's agriculture.", "বাংলাদেশের কৃষির ভবিষ্যৎ গড়তে কৃষক, গবেষক ও প্রতিষ্ঠানের সাথে যোগ দিন।")}</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a href="#" className="inline-flex items-center gap-2 rounded-full bg-background text-foreground px-7 py-3.5 text-base font-medium hover:scale-[1.03] transition-transform">{t("Get Started", "শুরু করুন")} <ArrowRight className="h-4 w-4" /></a>
+              <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-full bg-background text-foreground px-7 py-3.5 text-base font-medium hover:scale-[1.03] transition-transform">{t("Get Started", "শুরু করুন")} <ArrowRight className="h-4 w-4" /></Link>
               <a href="#" className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 text-primary-foreground px-7 py-3.5 text-base font-medium hover:bg-primary-foreground/10 transition"><Play className="h-4 w-4" /> {t("Watch Demo", "ডেমো দেখুন")}</a>
             </div>
           </div>
