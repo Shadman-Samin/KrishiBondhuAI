@@ -28,7 +28,7 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
         />
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 ml-auto">
         <button
           onClick={() => setLang(lang === "en" ? "bn" : "en")}
           className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/40 hover:text-primary transition"
