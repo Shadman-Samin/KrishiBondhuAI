@@ -82,8 +82,9 @@ function SoilPage() {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-sm font-medium">{t("Soil pH", "মাটির pH")}</label>
+            <label htmlFor="soil-ph" className="text-sm font-medium">{t("Soil pH", "মাটির pH")}</label>
             <input
+              id="soil-ph"
               type="number"
               step="0.1"
               min="0"
@@ -95,8 +96,9 @@ function SoilPage() {
             />
           </div>
           <div>
-            <label className="text-sm font-medium">{t("Nitrogen (N)", "নাইট্রোজেন (N)")}</label>
+            <label htmlFor="soil-nitrogen" className="text-sm font-medium">{t("Nitrogen (N)", "নাইট্রোজেন (N)")}</label>
             <select
+              id="soil-nitrogen"
               value={form.nitrogen}
               onChange={(e) => setForm({ ...form, nitrogen: e.target.value })}
               className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring"
@@ -108,8 +110,9 @@ function SoilPage() {
             </select>
           </div>
           <div>
-            <label className="text-sm font-medium">{t("Phosphorus (P)", "ফসফরাস (P)")}</label>
+            <label htmlFor="soil-phosphorus" className="text-sm font-medium">{t("Phosphorus (P)", "ফসফরাস (P)")}</label>
             <select
+              id="soil-phosphorus"
               value={form.phosphorus}
               onChange={(e) => setForm({ ...form, phosphorus: e.target.value })}
               className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring"
@@ -121,8 +124,9 @@ function SoilPage() {
             </select>
           </div>
           <div>
-            <label className="text-sm font-medium">{t("Potassium (K)", "পটাশিয়াম (K)")}</label>
+            <label htmlFor="soil-potassium" className="text-sm font-medium">{t("Potassium (K)", "পটাশিয়াম (K)")}</label>
             <select
+              id="soil-potassium"
               value={form.potassium}
               onChange={(e) => setForm({ ...form, potassium: e.target.value })}
               className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring"
@@ -134,8 +138,9 @@ function SoilPage() {
             </select>
           </div>
           <div>
-            <label className="text-sm font-medium">{t("Soil Texture", "মাটির গঠন")}</label>
+            <label htmlFor="soil-texture" className="text-sm font-medium">{t("Soil Texture", "মাটির গঠন")}</label>
             <select
+              id="soil-texture"
               value={form.texture}
               onChange={(e) => setForm({ ...form, texture: e.target.value })}
               className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring"
@@ -147,8 +152,9 @@ function SoilPage() {
             </select>
           </div>
           <div>
-            <label className="text-sm font-medium">{t("Organic Matter %", "জৈব পদার্থ %")}</label>
+            <label htmlFor="soil-organic" className="text-sm font-medium">{t("Organic Matter %", "জৈব পদার্থ %")}</label>
             <input
+              id="soil-organic"
               type="number"
               step="0.1"
               min="0"

@@ -38,7 +38,7 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
           {lang === "en" ? "বাং" : "EN"}
         </button>
 
-        <button className="relative p-2 rounded-lg hover:bg-accent text-muted-foreground">
+        <button className="relative p-2 rounded-lg hover:bg-accent text-muted-foreground" aria-label="Notifications">
           <Bell className="h-5 w-5" />
           <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary" />
         </button>

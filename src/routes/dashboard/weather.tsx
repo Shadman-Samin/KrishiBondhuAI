@@ -13,7 +13,6 @@ import {
   Droplets,
   Wind,
   MapPin,
-  Loader2,
   AlertTriangle,
 } from "lucide-react";
 
@@ -86,7 +85,7 @@ function WeatherPage() {
         <h1 className="text-2xl font-bold font-display">
           {t("Weather Forecast", "আবহাওয়ার পূর্বাভাস")}
         </h1>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {CITIES.map((c, i) => (
             <button
               key={c.name}
@@ -150,7 +149,7 @@ function WeatherPage() {
               )}
             </div>
             <div className="flex items-center gap-6">
-              <div className="text-5xl font-bold font-display">
+              <div className="text-4xl sm:text-5xl font-bold font-display">
                 {location.current.temp}°C
               </div>
               <div className="space-y-1 text-sm text-muted-foreground">

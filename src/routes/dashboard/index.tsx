@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useLang } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { CloudSun, CalendarDays, ScanLine, Store, Sprout, AlertTriangle } from "lucide-react";
-import { PRICE_TREND } from "@/data/marketplace";
+import PRICE_TREND from "@/data/market-prices.json";
 import { CITIES, fetchWeather } from "@/lib/weather-api";
 
 export const Route = createFileRoute("/dashboard/")({
@@ -161,20 +161,22 @@ function DashboardHome() {
             {t("Market Overview", "বাজার পরিসংখ্যান")}
           </h2>
           <div className="space-y-3">
-            {PRICE_TREND.slice(0, 5).map((item) => (
-              <div key={item.crop} className="flex items-center justify-between">
-                <span className="text-sm">{t(item.crop, item.cropBn)}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">৳{item.price}/kg</span>
-                  <span
-                    className={`text-xs ${item.change >= 0 ? "text-emerald-600" : "text-red-500"}`}
-                  >
-                    {item.change >= 0 ? "+" : ""}
-                    {item.change}%
-                  </span>
+            {(() => {
+              const priceItems = (PRICE_TREND as any[]).reduce((acc: Record<string, any>, item: any) => {
+                const key = item.crop;
+                if (!acc[key] || item.date > acc[key].date) acc[key] = item;
+                return acc;
+              }, {});
+              return Object.values(priceItems).slice(0, 5).map((item: any) => (
+                <div key={item.crop} className="flex items-center justify-between">
+                  <span className="text-sm">{t(item.crop, item.cropBn)}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium">৳{item.price}/kg</span>
+                    <span className="text-xs text-muted-foreground">{item.market?.split(" ")[0] ?? ""}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ));
+            })()}
           </div>
           <Link
             to="/dashboard/marketplace"

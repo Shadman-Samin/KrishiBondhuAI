@@ -25,10 +25,7 @@ function SettingsPage() {
 
         <div className="flex items-center gap-4">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary text-xl font-semibold">
-            {user?.name
-              .split(" ")
-              .map((n) => n[0])
-              .join("") ?? "?"}
+            {user ? user.name.split(" ").map((n) => n[0]).join("") : "?"}
           </div>
           <div>
             <div className="font-medium">{user?.name ?? t("Guest", "অতিথি")}</div>
@@ -73,6 +70,7 @@ function SettingsPage() {
           <div className="flex gap-1 bg-accent rounded-lg p-1">
             <button
               onClick={() => setLang("en")}
+              aria-pressed={lang === "en"}
               className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                 lang === "en" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"
               }`}
@@ -81,6 +79,7 @@ function SettingsPage() {
             </button>
             <button
               onClick={() => setLang("bn")}
+              aria-pressed={lang === "bn"}
               className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                 lang === "bn" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"
               }`}

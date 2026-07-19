@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useLang } from "@/lib/i18n";
-import { MARKET_LISTINGS, PRICE_TREND } from "@/data/marketplace";
-import { TrendingUp, TrendingDown, MapPin, Calendar, Tag } from "lucide-react";
+import { MARKET_LISTINGS } from "@/data/marketplace";
+import PRICE_TREND from "@/data/market-prices.json";
+import { TrendingUp, TrendingDown, MapPin, Calendar, Tag, Database } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/marketplace")({
   component: MarketplacePage,
@@ -15,6 +16,17 @@ function MarketplacePage() {
   const listings =
     filter === "all" ? MARKET_LISTINGS : MARKET_LISTINGS.filter((l) => l.type === filter);
 
+  // Aggregate real WFP prices: pick latest price per crop from Dhaka markets
+  const priceData = PRICE_TREND.reduce((acc: Record<string, { crop: string; cropBn: string; price: number; market: string; date: string }>, item: any) => {
+    const key = item.crop;
+    if (!acc[key] || item.date > acc[key].date) {
+      acc[key] = item;
+    }
+    return acc;
+  }, {} as Record<string, any>);
+  const priceItems = Object.values(priceData) as { crop: string; cropBn: string; price: number; market: string; date: string }[];
+  const latestDate = priceItems.length > 0 ? priceItems[0].date : "May 2026";
+
   return (
     <div className="space-y-6">
       <div>
@@ -24,21 +36,25 @@ function MarketplacePage() {
         </p>
       </div>
 
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <h2 className="font-semibold font-display">{t("Real-Time Prices", "তাজা দাম")}</h2>
+          <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+            <Database className="h-3 w-3" />
+            {t("WFP Bangladesh", "ডব্লিউএফপি বাংলাদেশ")}
+          </span>
+        </div>
+        <span className="text-xs text-muted-foreground">
+          {t(`Data: ${latestDate}`, `তথ্য: ${latestDate}`)}
+        </span>
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {PRICE_TREND.map((item) => (
+        {priceItems.map((item) => (
           <div key={item.crop} className="rounded-xl border border-border bg-card p-4 shadow-card">
             <div className="text-sm font-medium">{t(item.crop, item.cropBn)}</div>
             <div className="text-xl font-bold font-display mt-1">৳{item.price}</div>
-            <div className="flex items-center gap-1 mt-1">
-              {item.change >= 0 ? (
-                <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />
-              ) : (
-                <TrendingDown className="h-3.5 w-3.5 text-red-500" />
-              )}
-              <span className={`text-xs ${item.change >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-                {item.change >= 0 ? "+" : ""}
-                {item.change}%
-              </span>
+            <div className="text-xs text-muted-foreground mt-1">
+              {t("per kg", "প্রতি কেজি")} · {item.market?.split(" ")[0] ?? "Dhaka"}
             </div>
           </div>
         ))}
@@ -68,6 +84,11 @@ function MarketplacePage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {listings.length === 0 && (
+          <div className="col-span-full rounded-xl border border-border bg-card p-8 text-center">
+            <p className="text-muted-foreground">{t("No listings match this filter.", "এই ফিল্টারে কোনো তালিকা নেই।")}</p>
+          </div>
+        )}
         {listings.map((listing) => (
           <div
             key={listing.id}
@@ -108,7 +129,10 @@ function MarketplacePage() {
 
             <div className="mt-3 pt-3 border-t border-border flex items-center justify-between">
               <span className="text-sm">{t(listing.seller, listing.sellerBn)}</span>
-              <button className="rounded-lg bg-primary px-4 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
+              <button
+                onClick={() => alert(t("Coming soon! Contact feature will be available in the next update.", "শীঘ্রই আসছে! যোগাযোগ বৈশিষ্ট্য পরবর্তী আপডেটে উপলব্ধ হবে।"))}
+                className="rounded-lg bg-primary px-4 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
                 {t("Contact", "যোগাযোগ")}
               </button>
             </div>

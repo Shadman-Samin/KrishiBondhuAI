@@ -1,15 +1,7 @@
 import { Link, useMatchRoute } from "@tanstack/react-router";
 import {
-  LayoutDashboard,
-  CloudSun,
-  CalendarDays,
-  ScanLine,
-  FlaskConical,
-  Store,
-  Settings,
-  Leaf,
-  ChevronLeft,
-  ChevronRight,
+  LayoutDashboard, CloudSun, CalendarDays, ScanLine,
+  FlaskConical, Store, Settings, Leaf, ChevronLeft, ChevronRight,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -115,10 +107,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
         {user && !collapsed && (
           <div className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-xs">
-              {user.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
+              {user ? user.name.split(" ").map((n) => n[0]).join("") : "?"}
             </div>
             <div className="leading-tight truncate">
               <div className="font-medium text-foreground truncate">{user.name}</div>
