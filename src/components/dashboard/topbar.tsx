@@ -49,13 +49,13 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
             className="flex items-center gap-2 p-1 rounded-lg hover:bg-accent"
           >
             <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
-                {user?.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("") ?? "?"}
+              <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
+                {user ? user.name.split(" ").map((n) => n[0]).join("") : "?"}
               </AvatarFallback>
             </Avatar>
+            <span className="hidden md:inline text-sm font-medium">
+              {user?.name.split(" ")[0]}
+            </span>
           </button>
 
           {menuOpen && (
